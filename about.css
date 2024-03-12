@@ -1,0 +1,58 @@
+.about {
+    width: 100%;
+    height: 100vh;
+    display: none;
+  }
+
+  #back-button {
+    z-index: 100;
+    position: relative;
+    cursor: pointer;
+  }
+
+.background-code {
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+}
+
+.code-staircase {
+    margin: 30px;
+    font-size: .8vw;
+    position: absolute;
+    color: #7c7c7c;
+    border-radius: 8px;
+    width: max-content;
+    bottom: 0;
+}
+
+.code-staircase pre {
+    margin: 0; /* Removes default margin from 'pre' */
+    white-space: pre-wrap; /* Ensures code lines wrap and maintain formatting */
+    width: max-content;
+}
+
+.code-staircase code {
+    white-space: nowrap;
+    display: block; /* Ensure each code line is on a new line */
+    overflow: hidden; /* Ensures that the text is clipped as the container's width increases */
+    margin: 5px 0; /* Adds a small space between lines of code */
+    width: max-content;
+    border-right: .15em solid white; /* The typwriter cursor */
+    
+}
+
+.type-animation {
+    animation: typing 1.5s steps(60, end), blink-caret .5s step-end infinite;
+}
+
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+  }
+  
+  /* The typewriter cursor effect */
+  @keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: white }
+  }
