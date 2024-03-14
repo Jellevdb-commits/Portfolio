@@ -23,8 +23,8 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           server: ${{ secrets.FTP_SERVER }}
           port: ${{ secrets.FTP_PORT }}
-          remote_path: '/'
-          sftp_only: false
+          remote_path: '/httpdocs'
+          sftp_only: true
 
       # Move the script back to its original location
       - name: Restore script from the temporary location
