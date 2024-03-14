@@ -1,0 +1,21 @@
+name: Deploy naar MijnDomein Hosting
+
+on:
+  push:
+    branches:
+      - main  # of je default branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Copy files to MijnDomein Hosting
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        port: 22
+        source: "."
+        target: "/httpdocs"
