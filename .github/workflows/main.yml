@@ -1,49 +1,21 @@
+name: Deploy naar MijnDomein Hosting
+
 on:
   push:
     branches:
-      - main
+      - main  # of je default branch
+
 jobs:
-  deploy_job:
+  deploy:
     runs-on: ubuntu-latest
-    name: deploy
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      
-      # Temporarily move the script to a different location
-      - name: Move script to a temporary location
-        run: |
-          mkdir -p .tmp/
-          mv delete_missing_files.py .tmp/
-
-      - name: Deploy file
-        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
-        with:
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          server: ${{ secrets.FTP_SERVER }}
-          port: ${{ secrets.FTP_PORT }}
-          remote_path: '/httpdocs'
-          sftp_only: true
-
-      # Move the script back to its original location
-      - name: Restore script from the temporary location
-        run: |
-          mv .tmp/delete_missing_files.py .
-          rmdir .tmp/
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install paramiko
-      - name: Delete missing files in SFTP
-        env:
-          FTP_SERVER: ${{ secrets.FTP_SERVER }}
-          FTP_PORT: ${{ secrets.FTP_PORT }}
-          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
-          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-        run: python delete_missing_files.py
+    - uses: actions/checkout@v2
+    - name: Copy files to MijnDomein Hosting
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        port: 22
+        source: "."
+        target: "/httpdocs"
