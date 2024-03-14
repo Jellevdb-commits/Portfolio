@@ -24,7 +24,7 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           port: ${{ secrets.FTP_PORT }}
           remote_path: '/'
-          sftp_only: true
+          sftp_only: false
 
       # Move the script back to its original location
       - name: Restore script from the temporary location
