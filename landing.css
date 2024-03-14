@@ -1,0 +1,251 @@
+  #starDiv {
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .landing {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    display: block;
+    animation: fade-in 1s forwards;
+  }
+  
+
+  .circle {
+    position: relative;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+  }
+  
+  
+  .dot {
+    position: absolute;
+    width: 5px; /* Smaller dot size for visibility on smaller circles */
+    height: 5px;
+    border-radius: 50%;
+    background-image: radial-gradient(#99ffff, #99ffff 10%, rgba(153, 255, 255, 0) 56%);
+  }
+
+  #circles-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto; /* Center in the viewport */
+    position: fixed;
+    width: 100%; /* Adjust based on your layout */
+    height: 100vh; /* Adjust based on your layout */
+    overflow: hidden; /* Hide overflow */
+    transition: transform 1s ease; /* Smooth transition for scaling */
+    transform: scale(1) translateX(0%);
+  }
+
+  .animate-curve-left {
+    animation: curveMovementLeft 1s forwards ease; /* Adjust duration as needed */
+  }
+
+  .reverse-curve-left {
+    animation: reverseCurveMovementLeft 1s forwards ease; /* Adjust duration as needed */
+  }
+
+  .animate-curve-right {
+    animation: curveMovementRight 1s forwards; /* Adjust duration as needed */
+  }
+
+  .reverse-curve-right {
+    animation: reverseCurveMovementRight 1s forwards; /* Adjust duration as needed */
+  }
+
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes curveMovementLeft {
+    0% {
+      transform: scale(1) translateX(0%);
+    }
+    100% {
+      transform: scale(5) translateX(-0%);
+    }
+  }
+
+  @keyframes reverseCurveMovementLeft {
+    0% {
+      transform: scale(5) translateX(0%);
+    }
+    100% {
+      transform: scale(1) translateX(-0%);
+    }
+  }
+
+  @keyframes curveMovementRight {
+    0% {
+      transform: scale(0) translateX(0%);
+    }
+    50% {
+      transform: scale(0.5) translateX(100%); /* Adjust scale as needed */
+    }
+    100% {
+      transform: scale(1) translateX(-0%);
+    }
+  }
+
+  @keyframes reverseCurveMovementRight {
+    0% {
+      transform: scale(1) translateX(0%);
+    }
+    50% {
+      transform: scale(0.5) translateX(100%); /* Adjust scale as needed */
+    }
+    100% {
+      transform: scale(0) translateX(0%);
+    }
+  }
+
+  @keyframes lightspeed {
+    0% {
+      width: 0vh;
+      opacity: 1;
+    }
+    50% {
+      width: 100vh;
+      opacity: 1;
+    }
+    100% {
+      width: 100vh;
+      opacity: 0;
+    }
+  }
+  
+  .center {
+    height: 1px;
+    width: 1px;
+    position: absolute;
+  }
+  
+  .star {
+    border: 1px solid transparent;
+    border-radius: 50%;
+    border-top-color: #99ffff;
+    margin: 0;
+    position: absolute;
+    transform-origin: left;
+    width: 1px;
+    opacity: 0;
+  
+
+  }
+
+  .lightspeed-animation {
+    animation: lightspeed 1s forwards;
+  }
+
+  .start-button {
+    position: absolute;
+    top: 75%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: max-content;
+    height: max-content;
+  }
+  
+  .start-button .c-button {
+    color: white;
+    font-weight: 700;
+    font-size: 1em;
+    text-decoration: none;
+    padding: .7em 1.8em;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  
+  .start-button .c-button--gooey {
+    color: white;
+    font-size: 1.3vw;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border: 2px solid white;
+    border-radius: 0;  
+    padding: 1em 2.8em;
+    position: relative;
+    transition: all 700ms ease;
+  }
+  .start-button .c-button__blobs {
+      height: 100%;
+      filter: url(#goo);
+      overflow: hidden;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: -3px;
+      right: -1px;
+      z-index: -1;
+      div {
+        background-color: white;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        transform: scale(1.4) translateY(125%) translateZ(0);
+        transition: all 700ms ease;
+        &:nth-child(1) {
+          clip-path: polygon(0 0, 100% 75%, 100% 100%, 0% 100%);
+          background-color: rgb(215, 215, 215);
+        }
+        &:nth-child(2) {
+          clip-path: polygon(0 75%, 100% 0%, 100% 100%, 0% 100%);
+          transition-delay: 200ms;
+        }
+      }
+    }
+    .start-button .c-button--gooey:hover {
+      color: black;
+      .c-button__blobs {
+        div {
+          transform: scale(8) translateY(0) translateZ(0);
+        }
+      }
+    }
+
+    .title {
+      text-align: center;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(1);
+      width: max-content;
+      height: max-content;
+      display: grid;
+      align-content: center;
+      justify-content: space-around;
+    }
+
+    .name {
+      font-size: 5vw;
+      font-weight: 900;
+      background-color: #fefefe;
+      background-image: radial-gradient(circle, #fefefe 0%, #00a4e4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+  }
+  
+
+
+  .subtitle {
+    color: white;
+    font-size: 2vw;
+  }
+
+
+
+
+  

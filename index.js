@@ -1,19 +1,31 @@
 document.addEventListener("DOMContentLoaded", function() {
+    // Scroll to top when page is loading
+    window.onbeforeunload = function () {
+        window.scrollTo(0, 0);
+    }
 
-    document.addEventListener('mousemove', function(e) {
+    const baseContainer = document.getElementById('circles-container');
+    const startButton = document.getElementById('start-button');
+    const starDiv = document.getElementById('starDiv');
+    const landing = document.getElementById('landing');
+    const about = document.getElementById('about');
+    const title = document.getElementById('title');
+
+    // Function, gradient middle point follows cursor
+    function MouseFollowTitleGradient(e){
         const x = e.clientX / window.innerWidth * 100;
         const y = e.clientY / window.innerHeight * 100;
     
         const gradient = `radial-gradient(circle at ${x}% ${y}%, #fefefe 0%, #00a4e4 100%)`;
     
         document.querySelector('.name').style.backgroundImage = gradient;
-    });
-    window.onbeforeunload = function () {
-        window.scrollTo(0, 0);
     }
-    const baseContainer = document.getElementById('circles-container');
-    const landing = document.getElementById('landing');
-    const about = document.getElementById('about');
+
+    document.addEventListener('mousemove', function(e) {
+        MouseFollowTitleGradient(e)
+    });
+
+
     let baseDiameter = 800; // Starting size for the largest circle
     const decrement = 30; // Smaller decrement for more gradual size reduction
     const baseDots = 50; // Starting number of dots
@@ -59,8 +71,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    const starDiv = document.getElementById('starDiv');
-
     createCircles(); // Initial creation of circles
 
     function calcCenter() {
@@ -82,20 +92,19 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     let scw, sch, scx, scy, centerBounds = 1; // Initialize centerBounds here
-function updateWindowSize() {
-    sch = window.innerHeight;
-    scw = window.innerWidth;
-    scx = scw / 2;
-    scy = sch / 2;
-}
-updateWindowSize(); // Initialize window size
+    function updateWindowSize() {
+        sch = window.innerHeight;
+        scw = window.innerWidth;
+        scx = scw / 2;
+        scy = sch / 2;
+    }
+    updateWindowSize(); // Initialize window size
 
     // Update window size on resize
     window.addEventListener('resize', updateWindowSize);
 
-    const startButton = document.getElementById('start-button');
+    document.getElementById('start-button').addEventListener('click', function handleClick() {
 
-    document.getElementById('start-button').addEventListener('click', function() {
         calcCenter();
 
         for (let i = 0; i < 100; i++) {
@@ -135,14 +144,13 @@ updateWindowSize(); // Initialize window size
         this.style.opacity = 0;
 
         title.style.transition = 'transform .5s ease, opacity .5s ease';
-        title.style.transform = `scale(2)`;
+        title.style.transform = `translate(-50%, -50%) scale(2)`;
         title.style.opacity = 0;
+
     });
     document.body.addEventListener('animationend', function(event) {
         if (event.target.className.includes('star')) {
             landing.style.display = 'none';
-            landing.style.opacity = 0;
-            landing.style.visibility = "hidden";
             about.style.display = 'block';
             starDiv.innerHTML = '';
             startButton.style.opacity = 1;
@@ -160,34 +168,50 @@ updateWindowSize(); // Initialize window size
             });
         }
     });
-    document.getElementById('back-button').addEventListener('click', function() {
 
-        landing.style.display = 'block';
-        about.style.display = 'none';
-
-        baseContainer.style.transition = 'transform .5s ease, opacity .5s ease';
-        baseContainer.style.transform = `scale(1)`;
-        baseContainer.style.opacity = 1;
-
-        title.style.transition = 'transform .5s ease, opacity .5s ease';
-        title.style.transform = `scale(1)`;
-        title.style.opacity = 1;
-        startButton.style.transition = 'all 700ms ease';
-
-        if (landing.style.opacity === "0" || landing.style.opacity === "") {
-            landing.style.visibility = "visible"; // Immediately set visibility to visible
-            setTimeout(function() { landing.style.opacity = "1"; }, 10); // Then, after a very short delay, start the opacity transition to visible
-          } else {
-            landing.style.opacity = "0"; // Start the opacity transition to invisible
-            setTimeout(function() { landing.style.visibility = "hidden"; }, 1000); // Delay the visibility to hidden until after the opacity transition finishes
-          }
+    document.querySelector('.back-button.about-back').addEventListener('click', function() {
+        PrevPage('about', 'landing', true);
     });
 
-    if (landing.style.opacity === "0" || landing.style.opacity === "") {
-        landing.style.visibility = "visible"; // Immediately set visibility to visible
-        setTimeout(function() { landing.style.opacity = "1"; }, 10); // Then, after a very short delay, start the opacity transition to visible
-      } else {
-        landing.style.opacity = "0"; // Start the opacity transition to invisible
-        setTimeout(function() { landing.style.visibility = "hidden"; }, 1000); // Delay the visibility to hidden until after the opacity transition finishes
+    document.querySelector('.next-button.about-next').addEventListener('click', function() {
+        NextPage('about', 'projects', false);
+    });
+
+      function  NextPage (currentPageId, nextPageId){
+        const currentPage = document.getElementById(`${currentPageId}`);
+        const nextPage = document.getElementById(`${nextPageId}`);
+
+        nextPage.style.display = 'block';
+        currentPage.style.display = 'none';
+      }
+
+      function PrevPage (currentPageId, prevPageId, isLanding) {
+        const currentPage = document.getElementById(`${currentPageId}`);
+        const prevPage = document.getElementById(`${prevPageId}`);
+        const goToLanding = isLanding;
+
+
+        currentPage.classList.add('fadeout')
+
+        document.body.addEventListener('animationend', function(event) {
+            if (event.target.className.includes(`about`) && event.target.className.includes('fadeout') && currentPage.style.display === 'block') {
+                currentPage.style.display = 'none';
+                currentPage.classList.remove('fadeout');
+                prevPage.style.display = 'block';
+            }
+        });
+
+
+
+        if (goToLanding) {
+            baseContainer.style.transition = 'transform .5s ease, opacity .5s ease';
+            baseContainer.style.transform = `scale(1)`;
+            baseContainer.style.opacity = 1;
+    
+            title.style.transition = 'transform .5s ease, opacity .5s ease';
+            title.style.transform = `translate(-50%, -50%) scale(1)`;
+            title.style.opacity = 1;
+            startButton.style.transition = 'all 700ms ease';
+        }
       }
 });
